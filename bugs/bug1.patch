@@ -1,0 +1,85 @@
+diff --git a/foundry.toml b/foundry.toml
+index e883058..c95ece4 100644
+--- a/foundry.toml
++++ b/foundry.toml
+@@ -3,4 +3,12 @@ src = "src"
+ out = "out"
+ libs = ["lib"]
+ 
++# [fuzz]
++# depth = 50
++# runs = 2000
++
++[invariant]
++depth = 50
++runs = 2000
++
+ # See more config options https://github.com/foundry-rs/foundry/tree/master/config
+diff --git a/script/Counter.s.sol b/script/Counter.s.sol
+deleted file mode 100644
+index 1a47b40..0000000
+--- a/script/Counter.s.sol
++++ /dev/null
+@@ -1,12 +0,0 @@
+-// SPDX-License-Identifier: UNLICENSED
+-pragma solidity ^0.8.13;
+-
+-import {Script, console2} from "forge-std/Script.sol";
+-
+-contract CounterScript is Script {
+-    function setUp() public {}
+-
+-    function run() public {
+-        vm.broadcast();
+-    }
+-}
+diff --git a/src/Counter.sol b/src/Counter.sol
+deleted file mode 100644
+index aded799..0000000
+--- a/src/Counter.sol
++++ /dev/null
+@@ -1,14 +0,0 @@
+-// SPDX-License-Identifier: UNLICENSED
+-pragma solidity ^0.8.13;
+-
+-contract Counter {
+-    uint256 public number;
+-
+-    function setNumber(uint256 newNumber) public {
+-        number = newNumber;
+-    }
+-
+-    function increment() public {
+-        number++;
+-    }
+-}
+diff --git a/test/Counter.t.sol b/test/Counter.t.sol
+deleted file mode 100644
+index c0dfa7d..0000000
+--- a/test/Counter.t.sol
++++ /dev/null
+@@ -1,24 +0,0 @@
+-// SPDX-License-Identifier: UNLICENSED
+-pragma solidity ^0.8.13;
+-
+-import {Test, console2} from "forge-std/Test.sol";
+-import {Counter} from "../src/Counter.sol";
+-
+-contract CounterTest is Test {
+-    Counter public counter;
+-
+-    function setUp() public {
+-        counter = new Counter();
+-        counter.setNumber(0);
+-    }
+-
+-    function testIncrement() public {
+-        counter.increment();
+-        assertEq(counter.number(), 1);
+-    }
+-
+-    function testSetNumber(uint256 x) public {
+-        counter.setNumber(x);
+-        assertEq(counter.number(), x);
+-    }
+-}
